@@ -1,17 +1,17 @@
 <template>
   <main class="w-screen h-screen flex justify-center items-center">
-    <div class="w-[750px] border-2 border-black h-80 p-2 bg-gray">
+    <div class="md:w-[750px] border-2 border-black md:h-80 md:p-2 p-4 bg-gray">
       <TheNavigationBar />
       <div
         id="player-ui"
-        class="w-full bg-blackBg mt-4 flex items-center justify-between"
+        class="bg-blackBg mt-4 flex flex-col md:flex-row items-center justify-between"
       >
         <!--Left Side-->
-        <div class="flex flex-col justify-between w-1/4 pl-2">
-          <p class="text-skyBlue text-6xl font-techMono">{{ duration }}</p>
-          <div class="w-[185px] h-16 relative">
+        <div class="flex flex-col w-full justify-between md:w-1/4 pl-3">
+          <p class="text-skyBlue text-6xl font-techMono text-center">{{ duration }}</p>
+          <div class="w-full md:w-[185px] h-16 relative">
             <audio hidden ref="foo" preload="auto" id="audio-player">
-              <source src="../assets/audio/test.mp3" type="audio/mpeg" />
+              <source src="../assets/audio/bites.mp3" type="audio/mpeg" />
             </audio>
             <av-bars
               caps-color="#a7c8d5"
@@ -22,7 +22,8 @@
               :bar-width="10"
               :bar-space="6"
               :canv-height="canvaHeight"
-              :canv-width="190"
+              :canv-width="190" 
+              style="text-align: center;"
             ></av-bars>
           </div>
         </div>
@@ -31,7 +32,7 @@
           <div class="flex flex-col mr-2">
             <div class="overflow-x-hidden">
               <p class="text-skyBlue text-3xl font-techMono self-end animate-paragraph">
-              Never Gonna Give You Up. R.Astley
+              Another One Bites The Dust -Queen
             </p>
             </div>
             <div class="flex space-x-4 self-end items-center">
@@ -50,7 +51,7 @@
             </div>
           </div>
           <div
-            class="rounded-lt-md w-[320px] h-14 self-end bg-gray flex items-center space-x-4 px-2 mt-2"
+            class="rounded-lt-md w-full md:w-[320px] h-14 self-end bg-gray flex items-center space-x-4 px-2 mt-2"
           >
             <button
               class="flex items-center px-2 py-2 h-10 bg-gradient-to-b from-silverBtns to-grey rounded-md border-2 border-gray"
@@ -62,7 +63,7 @@
           </div>
         </div>
       </div>
-      <div class="mt-3">
+      <div class="mt-3 p-2">
         <vue-slider v-model="audioValue" :max="100" tooltip="none" @dragging="changePosition" @change="changePosition"></vue-slider>
       </div>
       <!--Controls-->
@@ -128,7 +129,6 @@ import { defineComponent } from "vue";
 import TheNavigationBar from "../components/TheNavigationBar.vue";
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
-
 const getAudio = () => {
   const audio = document.getElementById("audio-player") as HTMLAudioElement;
   const duration = audio.duration;
@@ -145,6 +145,9 @@ export default defineComponent({
       getAudio,
     };
   },
+  mounted(){
+   this.findTrack()
+  },
   data() {
     return {
       duration: "00:00",
@@ -153,7 +156,9 @@ export default defineComponent({
       slider: 0,
       audioValue:0,
       volumeValue:5,
-      
+      trackName:'',
+      tracks:[{title:'Another One Bites The Bites',
+artist:'Queen',id:1,slug:'bites'},{title:'Say you, Say me',artist:'Lionel Richie',id:2,slug:'say'},{title:'Never Gonna Give You Up', artist:'R.Astley',id:3,slug:'slug'}]
     };
   },
   methods: {
@@ -168,6 +173,10 @@ export default defineComponent({
       this.duration = this.convertTime(this.getAudio().audio.currentTime) 
       });
     },
+    findTrack(index:number=0){
+       
+
+},  
     pauseAudio() {
       this.getAudio().audio.pause();
       const changeicon = document.querySelector('.changePlayIcon') as HTMLElement;
